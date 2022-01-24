@@ -72,7 +72,6 @@ export default {
     },
     computed: {
         groupsName() {
-            console.log(this.users, 'groupsName');
             let groups = [...this.users]
             return groups.reduce((prevVal, newVal) => {
                 let group = newVal.username[0]

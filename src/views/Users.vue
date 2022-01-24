@@ -1,10 +1,14 @@
 <template>
     <div class="users">
         <div class="users-top-bar">
-            <Search
-                :users="this.users"
-                @findBySearch="findBySearch"
-            />
+            <div class="search">
+                <input
+                    type="text"
+                    v-model="searchData"
+                    placeholder="Type Username"
+                >
+            </div>
+
             <div class="top-bar__select">
                 <label for="sort-select">Sort By</label>
                 <select id="sort-select" v-model="selectedSortVal">
@@ -16,7 +20,7 @@
       
         <div class="users-main">
             <User
-                :users="this.users"
+                :users="usersData"
                 :selectedVal="selectedSortVal"
             />   
             <Details 
@@ -27,17 +31,17 @@
                 @hideModal="hideModal"
                 @sendForm="sendForm"
             >   
-                    <div
-                        class="form-item"
-                        v-for="item, idx in Object.keys(userContacts)"
-                        :key="idx"
-                    >
-                        <label :for="`contact-${item}`">{{item}}</label>
-                        <input :type="userContacts[item].type" :id="`contact-${item}`" v-model="userContacts[item].value">
-                    </div>
-                    <template v-slot:modal-footer>
-                        {{error}}
-                    </template>
+                <div
+                    class="form-item"
+                    v-for="item, idx in Object.keys(userContacts)"
+                    :key="idx"
+                >
+                    <label :for="`contact-${item}`">{{item}}</label>
+                    <input :type="userContacts[item].type" :id="`contact-${item}`" v-model="userContacts[item].value">
+                </div>
+                <template v-slot:modal-footer>
+                    {{error}}
+                </template>
             </Modal>
         </div>
     </div>
@@ -49,7 +53,6 @@ import { mapActions, mapGetters } from 'vuex'
 import User from '@/components/User'
 import Details from '@/components/Details'
 import Modal from '../components/Modal.vue'
-import Search from '../components/Search.vue'
 
 export default {
     name: 'ConUsers',
@@ -57,7 +60,7 @@ export default {
         User,
         Details,
         Modal,
-        Search
+        // Search
     },
     data() {
         return {
@@ -81,28 +84,32 @@ export default {
             group: [],
             isSort: false,
             selectedSortVal: '',
+            forTest: '',
+            searchData: ''
         }
     },
     computed: {
         ...mapGetters({
             users: 'users',
             sortUsers: 'sortUsers'
-        })
+        }),
+        usersData() {
+            if(this.searchData) {
+                return this.users.filter(item => {
+                    if(item.username.toLowerCase().includes(this.searchData.toLowerCase())) return item
+                })
+            }
+            return this.users
+        }
     },
     methods: {
         ...mapActions([
             'changeUserData',
             'sortUsersData',
             'getUsers',
-            'groupsByLetter'
         ]),
-        findBySearch(users) {
-            // this.users = users
-            this.users.filter(item => item.username.toLowerCase().includes(this.searchData.toLowerCase()))
-            console.log(users);
-        },
+
         sortData(value = this.selectedSortVal) {
-            console.log(this.users, 'USERS');
             if(value) {
                 this.isSort = true
                 this.sortUsersData([...this.users])
@@ -112,15 +119,17 @@ export default {
                 this.getUsers()
             }
         },
+
         showModal(user) {
-            console.log(user, 'USER');
             this.isShow = true
             this.user = user
         },
+
         hideModal() {
             this.isShow = false
             this.clearForm()
         },
+
         sendForm() {
             this.user = {
                 ...this.user,
@@ -139,6 +148,7 @@ export default {
             this.hideModal()
             this.clearForm()
         },
+
         clearForm() {
             for (let key in this.userContacts) {
                 this.userContacts[key].value = ''
@@ -150,17 +160,21 @@ export default {
         selectedSortVal: function() {
             this.sortData()
         }
-    },
-    mounted() {
-    },
-    updated() {
-        console.log(this.isSort);
     }
-
 }
 </script>
 
 <style lang="scss" scoped>
+    input {
+        outline: none;
+        border: 1px solid #efefef;
+        color: #494949;
+        height: 30px;
+        font-family: 'Didact Gothic';
+    }
+    .search {
+        margin-left: 15px;
+    }
     select {
         outline: none;
         border: 1px solid #efefef;

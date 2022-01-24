@@ -16,7 +16,6 @@ export const sendRequest = (cmd, body = null) => {
             data: body,
             responseType: 'json'
         }).then(res => {
-            console.log(res.data, 'RESPONSE');
             resolve(res.data)
         }).catch(result => {
             reject(result)

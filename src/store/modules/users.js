@@ -5,12 +5,10 @@ import { DATA_API } from '@/helpers/localStorage'
 const state = {
     users: getItem(DATA_API) || [],
     user: getItem(DATA_API) ? getItem(DATA_API)[0] : {},
-    sortUsers: []
 }
 
 const getters = {
     users: state => state.users,
-    sortUsers: state => state.sortUsers,
     user: state => state.user
 }
 
@@ -37,16 +35,17 @@ const actions = {
     getUsers({ commit }) {
         if(!getItem(DATA_API)) {
             sendRequest('users').then(res => {
-                console.log(res, 'RESP');
                 setItem(DATA_API, res)
                 commit('getUsersSuccess', res)
             })
         }
         else commit('getUsersSuccess', getItem(DATA_API))
     },
+
     getOneUser({ commit }, user) {
         commit('getOneUser', user)
     },
+
     sortUsersData({ commit }, users) {
         return new Promise(resolve => {
             users.sort((a, b) => {
@@ -60,6 +59,7 @@ const actions = {
             resolve(users)
         })
     },
+
     changeUserData({ commit, dispatch }, user) {
         commit('changeUserDataSuccess', user)
         let users = getItem(DATA_API)
