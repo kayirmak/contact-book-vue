@@ -60,7 +60,6 @@ export default {
         User,
         Details,
         Modal,
-        // Search
     },
     data() {
         return {
