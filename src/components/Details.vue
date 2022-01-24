@@ -1,0 +1,120 @@
+<template>
+    <div class="details">
+        <div class="wrapper">
+            <button @click="showModal(user)">Edit</button>
+            <div class="details-image">
+                <img src="@/assets/img/photo.jpg" alt="">
+            </div>
+            <div class="details-title">
+                <h3>{{user.username}}</h3>
+                <p>{{user.name}}</p>
+            </div>
+            <Tabs 
+                :user="formedUser"
+                :tabs="tabs"
+                @showContent="showContent"
+            />
+            <details-content 
+                :content="content"
+                :tab="tab"
+            />
+        </div>
+    </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex'
+
+import Tabs from '@/components/Tabs'
+import DetailsContent from '@/components/DetailsContent'
+
+const tabs = {
+        contacts: {
+            isActive: false
+        },
+        company: {
+            isActive: false
+        }
+    }
+    
+export default {
+    name: 'ConDetails',
+    components: {
+        Tabs,
+        DetailsContent
+    },
+    data() {
+        return {
+            tabs,
+            content: '',
+            tab: ''
+        }
+    },
+    computed: {
+        ...mapGetters({
+            user: 'user'
+        }),
+        formedUser() {
+            const user = {...this.user}
+            Object.keys(this.tabs).filter(el => {
+                delete user[el]
+            })
+            return {contacts: {...user}, company: this.user.company, posts: this.user.posts}
+            
+        }
+    },
+    methods: {
+        showContent(content, tab) {
+            this.content = content
+            this.tab = tab
+        },
+        showModal(user) {
+            this.$emit('showModal', user)
+        },
+    }
+
+}
+</script>
+
+<style lang="scss" scoped>
+    button {
+        border: none;
+        height: 30px;
+        width: 60px;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    .wrapper {
+        width: 80%;
+        margin: 0 auto;
+    }
+    .details {
+        position: fixed;
+        right: 0;
+        width: 35%;
+        border-left: 1px solid #f7f7f7;
+        &-image {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 5px;
+            > img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 15px;
+            }
+        }
+        &-title {
+            text-align: center;
+            > h3, p {
+                margin: 0;
+            }
+        }
+    }
+    @media (max-width: 768px) {
+        .details {
+            display: none;
+        }
+    }
+
+</style>
