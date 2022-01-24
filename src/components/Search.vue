@@ -24,7 +24,7 @@ export default {
         }
     },
     methods: {
-        findBySearch() {
+        findBySearch() { 
             console.log(this.$store.state.users.users);
             // let prev = [...this.$store.state.users.users]
             // this.users.filter(item => {
