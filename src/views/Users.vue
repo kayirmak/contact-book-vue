@@ -22,6 +22,7 @@
             <User
                 :users="usersData"
                 :selectedVal="selectedSortVal"
+                @showModal="showModal"
             />   
             <Details 
                 @showModal="showModal"
@@ -31,6 +32,7 @@
                 @hideModal="hideModal"
                 @sendForm="sendForm"
             >   
+                <template v-slot:modal-header-title>Изменить</template>
                 <div
                     class="form-item"
                     v-for="item, idx in Object.keys(userContacts)"
@@ -39,9 +41,7 @@
                     <label :for="`contact-${item}`">{{item}}</label>
                     <input :type="userContacts[item].type" :id="`contact-${item}`" v-model="userContacts[item].value">
                 </div>
-                <template v-slot:modal-footer>
-                    {{error}}
-                </template>
+                <template v-slot:modal-footer>{{error}}</template>
             </Modal>
         </div>
     </div>

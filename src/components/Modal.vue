@@ -4,7 +4,7 @@
             <div class="wrapper">
                 <form class="form" @submit.prevent="sendForm">
                     <div class="modal-header">
-                        <div class="modal-header__title">Изменить</div>
+                        <div class="modal-header__title"><slot name="modal-header-title"></slot></div>
                         <div
                             class="modal-header__hide"
                             @click="hide"
@@ -13,7 +13,7 @@
                         </div>
                     </div>
                     <div class="modal-body">
-                            <slot></slot>
+                        <slot></slot>
                     </div>
                     <div class="modal-footer">
                         <div class="error">
@@ -57,7 +57,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
     button {
         border: none;
         height: 30px;
@@ -82,6 +81,8 @@ export default {
         width: 100%;
         height: 100vh;
         top: 0;
+        left: 0;
+        z-index: 100;
     }
     .modal {
         margin: 10% auto 0;
@@ -103,6 +104,10 @@ export default {
         &-body {
             padding: 0 0 25px;
             border-bottom: 1px solid #f7f7f7;
+            > .details {
+                position: relative;
+                width: 100%;
+            }
         }
         &-footer {
             padding: 10px 0;
@@ -121,5 +126,28 @@ export default {
         margin-right: 5px;
         background: green;
         color: #f7f7f7;
+    }
+    
+    @media (max-width: 768px) {
+        .modal {
+            width: 80%;
+        }
+        .details {
+            display: block;
+        }
+        .btn-group {
+            display: none;
+        }
+    }
+    @media (max-height: 450px) {
+        .modal {
+            margin-top: 0;
+            transform: scale(0.8);
+        }
+    }
+    @media (min-width: 769px) {
+        .back-modal {
+            display: none;
+        }
     }
 </style>

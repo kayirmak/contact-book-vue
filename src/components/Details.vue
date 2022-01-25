@@ -1,7 +1,7 @@
 <template>
     <div class="details">
         <div class="wrapper">
-            <button @click="showModal(user)">Edit</button>
+            <button class="details-btn" @click="showModal(user)">Edit</button>
             <div class="details-image">
                 <img src="@/assets/img/photo.jpg" alt="">
             </div>
@@ -93,8 +93,6 @@ export default {
         right: 0;
         width: 35%;
         border-left: 1px solid #f7f7f7;
-        height: 100vh;
-        overflow: scroll;
         &-image {
             width: 70px;
             height: 70px;
@@ -116,6 +114,14 @@ export default {
     @media (max-width: 768px) {
         .details {
             display: none;
+                &-btn {
+                    display: none;
+                }
+        }
+    }
+    @media (max-width: 1024px) {
+        .details {
+            font-size: 12px;
         }
     }
 

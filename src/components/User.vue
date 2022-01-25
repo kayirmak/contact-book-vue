@@ -1,5 +1,13 @@
 <template>
     <div class="user">
+        <Modal
+            v-if="isShowDetailsMobile"
+            @hideModal="isShowDetailsMobile=false"
+        >
+            <Details/>
+            <template v-slot:modal-footer></template>
+        </Modal>
+
         <div class="user-group" v-if="selectedVal === 'username'">
             <div
                 v-for="group, idx in groupsName"
@@ -25,6 +33,13 @@
                         
                         <div class="el-width email">{{user.email}}</div>
                         <div class="el-width">{{user.phone}}</div>
+                        <button
+                            class="item-btn"
+                            type="submit"
+                            @click="showModal(user)"
+                        >
+                            <i class="fa fa-edit"></i>
+                        </button>
                     </div>   
                 </div>
             </div>
@@ -46,15 +61,30 @@
                 </div>
                 <div class="el-width email">{{user.email}}</div>
                 <div class="el-width">{{user.phone}}</div>
+                <button
+                    class="item-btn"
+                    type="submit"
+                    @click.stop="showModal(user)"
+                >
+                    <i class="fa fa-edit"></i>
+                </button>
             </div>   
         </div>
     </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+import Details from './Details.vue'
+import Modal from './Modal.vue'
+
+
 export default {
     name: 'ConUser',
+    components: { 
+        Modal,
+        Details 
+    },
     props: {
         users: {
             required: true
@@ -67,10 +97,14 @@ export default {
     data() {
         return {
             isActive: false,
-            isShowGroup: false
+            isShowGroup: false,
+            isShowDetailsMobile: false,
         }
     },
     computed: {
+        ...mapGetters({
+            user: 'user'
+        }),
         groupsName() {
             let groups = [...this.users]
             return groups.reduce((prevVal, newVal) => {
@@ -88,7 +122,10 @@ export default {
         showDetails(user) {
             this.getOneUser(user)
             this.isActive = user.id
-            
+            this.isShowDetailsMobile = true
+        },
+        showModal(user) {
+            this.$emit('showModal', user)
         },
         toggleGroup(e) {
             e.target.nextSibling.style.display =  !e.target.nextSibling.style.display ? 'none' : ''
@@ -134,6 +171,11 @@ export default {
             }
         }
     }
+    .item-btn {
+        display: none;
+        border: 1px solid #ddd;
+        margin-right: 15px;
+    }
     .el-width {
         width: 33%;
         padding-left: 25px;
@@ -160,6 +202,9 @@ export default {
         }
     }
     @media (max-width: 768px) {
+        .item-btn {
+            display: block;
+        }
         .user {
             width: 100%;
             &-item {
