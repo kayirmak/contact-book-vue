@@ -4,7 +4,7 @@ import { DATA_API } from '@/helpers/localStorage'
 
 const state = {
     users: getItem(DATA_API) || [],
-    user: getItem(DATA_API) ? getItem(DATA_API)[0] : {},
+    user: null,
 }
 
 export const getterTypes = {
@@ -28,7 +28,9 @@ export const actionTypes = {
 
 const getters = {
     [getterTypes.users]: state => state.users,
-    [getterTypes.user]: state => state.user
+    [getterTypes.user]: state => {
+        return state.user ? state.user : state.users[0]
+    }
 }
 
 const mutations = {

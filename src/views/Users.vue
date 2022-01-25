@@ -26,7 +26,7 @@
                 :selectedVal="selectedSortVal"
                 @showModal="showModal"
             />   
-            <Details 
+            <Details
                 @showModal="showModal"
             />
             <Modal

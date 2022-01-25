@@ -104,7 +104,6 @@ export default {
     data() {
         return {
             isActive: false,
-            isShowGroup: false,
             isShowDetailsMobile: false,
         }
     },
@@ -138,7 +137,6 @@ export default {
         },
         toggleGroup(e) {
             e.target.nextSibling.style.display =  !e.target.nextSibling.style.display ? 'none' : ''
-            this.isShowGroup = !this.isShowGroup
         }
     }
 }

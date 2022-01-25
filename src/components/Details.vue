@@ -1,5 +1,8 @@
 <template>
-    <div class="details" ref="details">
+<div>
+    <div v-if="!user">dfds</div>
+
+    <div v-else class="details" ref="details">
         <div class="wrapper">
             <button class="details-btn" @click="showModal(user)">Edit</button>
             <div class="details-image">
@@ -20,6 +23,7 @@
             />
         </div>
     </div>
+</div>
 </template>
 
 <script>
