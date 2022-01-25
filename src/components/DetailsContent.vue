@@ -59,5 +59,10 @@ export default {
             font-size: 14px;
         }
     }
+    @media (max-height: 400px) {
+        .content-item {
+            margin-top: 5px;
+        }
+    }
 
 </style>

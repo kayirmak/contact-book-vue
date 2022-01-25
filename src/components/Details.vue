@@ -1,5 +1,5 @@
 <template>
-    <div class="details">
+    <div class="details" ref="details">
         <div class="wrapper">
             <button class="details-btn" @click="showModal(user)">Edit</button>
             <div class="details-image">
@@ -71,7 +71,19 @@ export default {
         showModal(user) {
             this.$emit('showModal', user)
         },
-    }
+    },
+    mounted() {
+        let vm = this
+        window.onscroll = function() {
+            let details = vm.$refs.details
+            window.pageYOffset >= vm.$refs.details.offsetTop ? details.classList.add('position-fixed') : details.classList.remove('position-fixed')
+            // if(window.pageYOffset >= vm.$refs.details.offsetTop) {
+            //     vm.$refs.details.classList.add('position-fixed')
+            // }
+            // else vm.$refs.details.classList.remove('position-fixed')
+            
+        }
+    } 
 
 }
 </script>
@@ -89,7 +101,7 @@ export default {
         margin: 0 auto;
     }
     .details {
-        position: fixed;
+        position: absolute;
         right: 0;
         width: 35%;
         border-left: 1px solid #f7f7f7;
@@ -111,6 +123,11 @@ export default {
             }
         }
     }
+    .position-fixed {
+        position: fixed;
+        right: 0;
+        margin-top: -46px;
+    }
     @media (max-width: 768px) {
         .details {
             display: none;
@@ -122,6 +139,11 @@ export default {
     @media (max-width: 1024px) {
         .details {
             font-size: 12px;
+        }
+    }
+    @media (max-height: 350px) {
+        .details {
+            font-size: 10px;
         }
     }
 

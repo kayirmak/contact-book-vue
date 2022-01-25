@@ -31,6 +31,7 @@
                 v-if="isShow"
                 @hideModal="hideModal"
                 @sendForm="sendForm"
+                :error="error"
             >   
                 <template v-slot:modal-header-title>Изменить</template>
                 <div
@@ -41,7 +42,6 @@
                     <label :for="`contact-${item}`">{{item}}</label>
                     <input :type="userContacts[item].type" :id="`contact-${item}`" v-model="userContacts[item].value">
                 </div>
-                <template v-slot:modal-footer>{{error}}</template>
             </Modal>
         </div>
     </div>

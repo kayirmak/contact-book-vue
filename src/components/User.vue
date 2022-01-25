@@ -5,7 +5,7 @@
             @hideModal="isShowDetailsMobile=false"
         >
             <Details/>
-            <template v-slot:modal-footer></template>
+            <template v-slot:modal-footer>&nbsp;</template> 
         </Modal>
 
         <div class="user-group" v-if="selectedVal === 'username'">
@@ -36,7 +36,7 @@
                         <button
                             class="item-btn"
                             type="submit"
-                            @click="showModal(user)"
+                            @click.stop="showModal(user)"
                         >
                             <i class="fa fa-edit"></i>
                         </button>

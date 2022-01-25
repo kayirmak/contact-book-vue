@@ -17,23 +17,25 @@
                     </div>
                     <div class="modal-footer">
                         <div class="error">
-                            <slot name="modal-footer"></slot>
+                            <div>{{error}}</div>
                         </div>
-                        <div class="btn-group">
-                            <button
-                                class="modal-footer__btn btn-submit"
-                                type="submit"
-                            >
-                                OK
-                            </button>
-                            <button
-                                class="modal-footer__btn btn-cancel"
-                                @click="hide"
-                                type="submit"
-                            >
-                                Cancel
-                            </button>
-                        </div>
+                        <slot name="modal-footer">
+                            <div class="btn-group">
+                                <button
+                                    class="modal-footer__btn btn-submit"
+                                    type="submit"
+                                >
+                                    OK
+                                </button>
+                                <button
+                                    class="modal-footer__btn btn-cancel"
+                                    @click="hide"
+                                    type="submit"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </slot>
                     </div>
                 </form>
             </div>
@@ -44,6 +46,11 @@
 <script>
 export default {
     name: 'ConModal',
+    props: {
+        error: {
+            type: String,
+        }
+    },
     methods: {
         hide() {
             this.$emit('hideModal')
@@ -134,9 +141,6 @@ export default {
         }
         .details {
             display: block;
-        }
-        .btn-group {
-            display: none;
         }
     }
     @media (max-height: 450px) {
