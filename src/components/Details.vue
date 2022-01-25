@@ -93,6 +93,8 @@ export default {
         right: 0;
         width: 35%;
         border-left: 1px solid #f7f7f7;
+        height: 100vh;
+        overflow: scroll;
         &-image {
             width: 70px;
             height: 70px;
