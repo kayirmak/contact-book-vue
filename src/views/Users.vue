@@ -1,6 +1,7 @@
 <template>
     <div class="users">
         <div class="users-top-bar">
+            <!-- input search -->
             <div class="search">
                 <input
                     type="text"
@@ -9,6 +10,7 @@
                 >
             </div>
 
+            <!-- select for sorting -->
             <div class="top-bar__select">
                 <label for="sort-select">Sort By</label>
                 <select id="sort-select" v-model="selectedSortVal">
@@ -49,6 +51,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { actionTypes, getterTypes } from '@/store/modules/users'
 
 import User from '@/components/User'
 import Details from '@/components/Details'
@@ -80,17 +83,17 @@ export default {
                 }
             },
             error: '',
-            group: [],
             isSort: false,
             selectedSortVal: '',
-            forTest: '',
             searchData: ''
         }
     },
     computed: {
         ...mapGetters({
-            users: 'users',
+            users: getterTypes.users,
         }),
+
+        // if user entried to input search, then returning sorted data else just data 
         usersData() {
             if(this.searchData) {
                 return this.users.filter(item => {
@@ -101,15 +104,17 @@ export default {
         }
     },
     methods: {
-        ...mapActions([
-            'changeUserData',
-            'sortUsersData',
-            'getUsers',
-        ]),
+        ...mapActions({
+            changeUserData: actionTypes.changeUserData,
+            sortUsersData: actionTypes.sortUsersData,
+            getUsers: actionTypes.getUsers,
+        }),
 
+        //sorting data by alphabet
         sortData(value = this.selectedSortVal) {
             if(value) {
                 this.isSort = true
+                //sending to action with data for sorting
                 this.sortUsersData([...this.users])
             }  
             else {
@@ -117,7 +122,7 @@ export default {
                 this.getUsers()
             }
         },
-
+        //showing the modal window
         showModal(user) {
             this.isShow = true
             this.user = user
@@ -128,19 +133,23 @@ export default {
             this.clearForm()
         },
 
+        //sending edited data and mini validate form
         sendForm() {
+            //forming edited data
             this.user = {
                 ...this.user,
                 name: this.userContacts.name.value,
                 phone: this.userContacts.phone.value,
                 email: this.userContacts.email.value
             }
-            
+        
             for (let key in this.userContacts) {
                 if(this.userContacts[key].value === '') {
                     return this.error = 'Заполните все поля'
                 }
             }
+
+            //sending edited data
             this.changeUserData(this.user)
             this.sortData()
             this.hideModal()
@@ -155,6 +164,7 @@ export default {
         }
     },
     watch: {
+        // running when entried data changes
         selectedSortVal: function() {
             this.sortData()
         }

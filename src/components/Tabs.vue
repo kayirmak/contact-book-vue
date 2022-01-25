@@ -27,11 +27,11 @@ export default {
     },
     data() {
         return {
-            isUser: '',
             defaultTab: Object.keys(this.user)[0]
         }
     },
     methods: {
+        // toggle tabs
         showContent(tab) {
             this.$emit('showContent', this.user[tab], tab)
             for(let key in this.tabs) {

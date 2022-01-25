@@ -7,46 +7,65 @@ const state = {
     user: getItem(DATA_API) ? getItem(DATA_API)[0] : {},
 }
 
+export const getterTypes = {
+    users: '[users] users',
+    user: '[users] user'
+}
+
+export const mutationTypes = {
+    getUsersSuccess: '[users] getUsersSuccess',
+    getOneUser: '[users] getOneUser',
+    changeUserDataSuccess: '[users] changeUserDataSuccess',
+    sortUsersData: '[users] sortUsersData'
+}
+
+export const actionTypes = {
+    getUsers: '[users] getUsers',
+    getOneUser: '[users] getOneUser',
+    sortUsersData: '[users] sortUsersData',
+    changeUserData: '[users] changeUserData'
+}
+
 const getters = {
-    users: state => state.users,
-    user: state => state.user
+    [getterTypes.users]: state => state.users,
+    [getterTypes.user]: state => state.user
 }
 
 const mutations = {
-    getUsersSuccess(state, data) {
+    [mutationTypes.getUsersSuccess](state, data) {
         state.users = data
     },
 
-    getOneUser(state, payload) {
+    [mutationTypes.getOneUser](state, payload) {
         state.user = payload
     },
     
-    changeUserDataSuccess(state, payload) {
+    [mutationTypes.changeUserDataSuccess](state, payload) {
         state.user = payload
     },
 
-    sortUsersData(state, data) {
+    [mutationTypes.sortUsersData](state, data) {
         state.users = data
     },
 
 }
 
 const actions = {
-    getUsers({ commit }) {
+    [actionTypes.getUsers]({ commit }) {
         if(!getItem(DATA_API)) {
             sendRequest('users').then(res => {
                 setItem(DATA_API, res)
-                commit('getUsersSuccess', res)
+                commit(mutationTypes.getUsersSuccess, res)
             })
         }
-        else commit('getUsersSuccess', getItem(DATA_API))
+        else commit(mutationTypes.getUsersSuccess, getItem(DATA_API))
     },
 
-    getOneUser({ commit }, user) {
-        commit('getOneUser', user)
+    [actionTypes.getOneUser]({ commit }, user) {
+        commit(mutationTypes.getOneUser, user)
     },
 
-    sortUsersData({ commit }, users) {
+    [actionTypes.sortUsersData]({ commit }, users) {
         return new Promise(resolve => {
             users.sort((a, b) => {
                 let nameA = a.username,
@@ -55,13 +74,13 @@ const actions = {
                 if(nameA > nameB) return 1
                 return 0
             })
-            commit('sortUsersData', users)
+            commit(mutationTypes.sortUsersData, users)
             resolve(users)
         })
     },
 
-    changeUserData({ commit, dispatch }, user) {
-        commit('changeUserDataSuccess', user)
+    [actionTypes.changeUserData]({ commit, dispatch }, user) {
+        commit(mutationTypes.changeUserDataSuccess, user)
         let users = getItem(DATA_API)
         users = users.map(item => {
             if(item.id === user.id) {
@@ -70,7 +89,7 @@ const actions = {
             return item
         })
         setItem(DATA_API, users)
-        dispatch('sortUsersData', users)
+        dispatch(actionTypes.sortUsersData, users)
     }
 }
 

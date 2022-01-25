@@ -1,5 +1,6 @@
 <template>
     <div class="user">
+        <!-- modal window, that showing details contact for mobile version -->
         <div class="user-modal">
             <Modal
                 v-if="isShowDetailsMobile"
@@ -10,6 +11,7 @@
             </Modal>
         </div>
 
+        <!-- render contacts for sort for alphabet -->
         <div class="user-group" v-if="selectedVal === 'username'">
             <div
                 v-for="group, idx in groupsName"
@@ -47,6 +49,7 @@
             </div>
         </div>        
 
+        <!-- render contacts -->
         <div v-else>
             <div
                 class="user-item"
@@ -77,6 +80,8 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { actionTypes, getterTypes } from '@/store/modules/users'
+
 import Details from './Details.vue'
 import Modal from './Modal.vue'
 
@@ -105,8 +110,10 @@ export default {
     },
     computed: {
         ...mapGetters({
-            user: 'user'
+            user: getterTypes.user
         }),
+
+        // grouping by first letter
         groupsName() {
             let groups = [...this.users]
             return groups.reduce((prevVal, newVal) => {
@@ -118,12 +125,12 @@ export default {
         }
     },
     methods: {
-        ...mapActions([
-            'getOneUser',
-        ]),
+        ...mapActions({
+            getOneUser: actionTypes.getOneUser,
+        }),
         showDetails(user) {
-            this.getOneUser(user)
-            this.isActive = user.id
+            this.$store.dispatch(actionTypes.getOneUser, user)
+            this.isActive = user.id    
             this.isShowDetailsMobile = true
         },
         showModal(user) {

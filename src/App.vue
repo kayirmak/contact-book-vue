@@ -5,11 +5,18 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import { actionTypes } from '@/store/modules/users'
 
 export default {
   name: 'ConApp',
+  methods: {
+    ...mapActions({
+      getUsers: actionTypes.getUsers
+    })
+  },
   mounted() {
-      this.$store.dispatch('getUsers')
+      this.getUsers()
   }
 }
 </script>

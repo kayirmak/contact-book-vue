@@ -41,9 +41,6 @@ export default {
         tab: {
             required: true
         }
-    },
-    mounted() {
-        console.log(this.tab);
     }
 }
 </script>

@@ -14,7 +14,7 @@
                 :tabs="tabs"
                 @showContent="showContent"
             />
-            <details-content 
+            <Details-content
                 :content="content"
                 :tab="tab"
             />
@@ -27,6 +27,7 @@ import { mapGetters } from 'vuex'
 
 import Tabs from '@/components/Tabs'
 import DetailsContent from '@/components/DetailsContent'
+import { getterTypes } from '@/store/modules/users'
 
 const tabs = {
         contacts: {
@@ -52,15 +53,15 @@ export default {
     },
     computed: {
         ...mapGetters({
-            user: 'user'
+            user: getterTypes.user
         }),
+        // forming object for render in details tabs
         formedUser() {
             const user = {...this.user}
             Object.keys(this.tabs).filter(el => {
                 delete user[el]
             })
             return {contacts: {...user}, company: this.user.company, posts: this.user.posts}
-            
         }
     },
     methods: {
@@ -71,6 +72,7 @@ export default {
         showModal(user) {
             this.$emit('showModal', user)
         },
+        // fixing position when scrolling
         detailsFixed() {
             let vm = this
             window.onscroll = function() {
