@@ -90,7 +90,6 @@ export default {
     computed: {
         ...mapGetters({
             users: 'users',
-            sortUsers: 'sortUsers'
         }),
         usersData() {
             if(this.searchData) {

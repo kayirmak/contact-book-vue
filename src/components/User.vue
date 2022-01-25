@@ -1,12 +1,14 @@
 <template>
     <div class="user">
-        <Modal
-            v-if="isShowDetailsMobile"
-            @hideModal="isShowDetailsMobile=false"
-        >
-            <Details/>
-            <template v-slot:modal-footer>&nbsp;</template> 
-        </Modal>
+        <div class="user-modal">
+            <Modal
+                v-if="isShowDetailsMobile"
+                @hideModal="isShowDetailsMobile=false"
+            >
+                <Details/>
+                <template v-slot:modal-footer>&nbsp;</template> 
+            </Modal>
+        </div>
 
         <div class="user-group" v-if="selectedVal === 'username'">
             <div
@@ -221,6 +223,11 @@ export default {
             margin-right: 15px;
         }   
         .el-width {
+            display: none;
+        }
+    }
+    @media (min-width: 769px) {
+        .user-modal {
             display: none;
         }
     }

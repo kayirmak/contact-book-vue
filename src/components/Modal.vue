@@ -149,9 +149,4 @@ export default {
             transform: scale(0.8);
         }
     }
-    @media (min-width: 769px) {
-        .back-modal {
-            display: none;
-        }
-    }
 </style>
