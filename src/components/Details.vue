@@ -1,5 +1,5 @@
 <template>
-    <div class="details" ref="details">
+    <div v-if="user" class="details" ref="details">
         <div class="wrapper">
             <button class="details-btn" @click="showModal(user)">Edit</button>
             <div class="details-image">
